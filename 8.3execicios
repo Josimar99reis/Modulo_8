@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "kernelspec": {
+      "name": "python",
+      "display_name": "Python (Pyodide)",
+      "language": "python"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "python",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.8"
+    },
+    "widgets": {
+      "application/vnd.jupyter.widget-state+json": {
+        "version_major": 2,
+        "version_minor": 0,
+        "state": {}
+      }
+    }
+  },
+  "nbformat_minor": 5,
+  "nbformat": 4,
+  "cells": [
+    {
+      "id": "931ad503-4dcc-4d0f-a149-ecc08902b087",
+      "cell_type": "markdown",
+      "source": "#Q1",
+      "metadata": {}
+    },
+    {
+      "id": "828149ec-f786-42a8-9230-6ba920616627",
+      "cell_type": "code",
+      "source": "\ndef contagem_caracteres(frase):\n    contagem = {}\n    for caractere in frase:\n        if caractere in contagem:\n            contagem[caractere] += 1\n        else:\n            contagem[caractere] = 1\n    return contagem",
+      "metadata": {
+        "trusted": true
+      },
+      "outputs": [],
+      "execution_count": null
+    },
+    {
+      "id": "d4a08fab-2005-4f19-8643-05ee4c479ce2",
+      "cell_type": "markdown",
+      "source": "#Q2",
+      "metadata": {}
+    },
+    {
+      "id": "63c01248-67b6-4066-b9b5-9c5470033448",
+      "cell_type": "code",
+      "source": "import requests\nfrom collections import Counter\nimport re\n\ndef baixar_arquivo(url, nome_arquivo):\n    resposta = requests.get(url)\n    with open(nome_arquivo, 'w', encoding='utf-8') as arquivo:\n        arquivo.write(resposta.text)\n\ndef contar_palavras(nome_arquivo):\n    with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:\n        texto = arquivo.read()\n        texto = re.sub(r'[^\\w\\s]', '', texto).lower()\n        palavras = texto.split()\n        contagem = Counter(palavras)\n        return dict(sorted(contagem.items(), key=lambda item: item[1], reverse=True))\n\nurl = 'https://aplauso.imprensaoficial.com.br/edicoes/12.0.813.502/12.0.813.502.txt'\nnome_arquivo = 'estomago.txt'\n\nbaixar_arquivo(url, nome_arquivo)\ncontagem_palavras = contar_palavras(nome_arquivo)\n\nfor palavra, frequencia in contagem_palavras.items():\n    print(f'{palavra}: {frequencia}')",
+      "metadata": {
+        "trusted": true
+      },
+      "outputs": [],
+      "execution_count": null
+    },
+    {
+      "id": "32fb6360-2793-49b7-af0b-57e4b516b679",
+      "cell_type": "markdown",
+      "source": "#Q3",
+      "metadata": {}
+    },
+    {
+      "id": "d8529d27-deec-48ee-8b2a-5c4e4d097b41",
+      "cell_type": "code",
+      "source": "def mesclar_dicionarios(dicionario1, dicionario2):\n    resultado = dicionario1.copy()\n    for chave, valor in dicionario2.items():\n        if chave in resultado:\n            resultado[chave] = max(resultado[chave], valor)\n        else:\n            resultado[chave] = valor\n    return resultado",
+      "metadata": {
+        "trusted": true
+      },
+      "outputs": [],
+      "execution_count": null
+    },
+    {
+      "id": "a5c53eb1-f951-48ae-a5eb-e4576a30043d",
+      "cell_type": "markdown",
+      "source": "#Q4",
+      "metadata": {}
+    },
+    {
+      "id": "36bfbf6e-5e44-4871-b005-b986c6aa3833",
+      "cell_type": "code",
+      "source": "def filtrar_dicionario(dicionario, chaves_filtradas):\n    return {chave: dicionario[chave] for chave in chaves_filtradas if chave in dicionario}",
+      "metadata": {
+        "trusted": true
+      },
+      "outputs": [],
+      "execution_count": null
+    },
+    {
+      "id": "854ee5ac-5d1f-48b1-9d3b-85e3383ad5a7",
+      "cell_type": "markdown",
+      "source": "#Q5",
+      "metadata": {}
+    },
+    {
+      "id": "d873b256-8e0e-4139-9348-72eb50f1f4b7",
+      "cell_type": "code",
+      "source": "def resultado_votacao(votos):\n    # Inicializa um dicionário para armazenar os resultados\n    resultados = {}\n\n    # Calcula o total de votos\n    total_votos = 0\n    for voto in votos:\n        total_votos += sum(voto.values())\n\n    # Itera sobre os votos e atualiza os resultados\n    for voto in votos:\n        for candidato, votos_candidato in voto.items():\n            if candidato in resultados:\n                resultados[candidato] = (resultados[candidato][0] + votos_candidato, 0)\n            else:\n                resultados[candidato] = (votos_candidato, 0)\n\n    # Calcula o percentual de votos para cada candidato\n    for candidato, (total, _) in resultados.items():\n        percentual = round((total / total_votos) * 100, 2)\n        resultados[candidato] = (total, percentual)\n\n    return resultados",
+      "metadata": {
+        "trusted": true
+      },
+      "outputs": [],
+      "execution_count": null
+    }
+  ]
+}
